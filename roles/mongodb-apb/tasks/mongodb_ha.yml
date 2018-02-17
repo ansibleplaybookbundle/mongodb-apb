@@ -1,0 +1,133 @@
+---
+- name: "[MONGODB-APB][{{ mode | upper }}] Set service_name fact from APB parameters"
+  set_fact:
+    service_name: "{{ MONGODB_SERVICE_NAME }}"
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Create ImageStream for MongoDB image"
+  openshift_v1_image_stream:
+    state: "{{ state }}"
+    name: "{{ app_name }}"
+    namespace: "{{ namespace }}"
+    labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    lookup_policy_local: False
+    tags:
+      - name: "{{ mongodb_image_tag }}"
+    docker_image_repository: "{{ mongodb_image }}"
+
+# A non-headless service which takes pod readiness into consideration
+- name: "[MONGODB-APB][{{ mode | upper }}] Set to {{ state }} the MongoDB Service"
+  k8s_v1_service:
+    state: "{{ state }}"
+    name: "{{ service_name }}"
+    namespace: "{{ namespace }}"
+    labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    selector:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    ports:
+    - name: "{{ service_name }}"
+      port: 27017
+      protocol: TCP
+  register: mongodb_svc
+
+# A headless service to create DNS records
+- name: "[MONGODB-APB][{{ mode | upper }}] Set to {{ state }} the MongoDB Internal Service"
+  k8s_v1_service:
+    state: "{{ state }}"
+    name: "{{ service_name }}-internal"
+    namespace: "{{ namespace }}"
+    spec_cluster_ip: "None"
+    annotations:
+      service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+    labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    selector:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    ports:
+    - name: "{{ service_name }}"
+      port: 27017
+      protocol: TCP
+  register: mongodb_svc_internal
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Set to {{ state }} the MongoDB HA Statefull Set for HA and plan"
+  k8s_v1beta1_stateful_set:
+    state: "{{ state }}"
+    name: "{{ service_name }}"
+    namespace: "{{ namespace }}"
+    service_name: "{{ service_name }}-internal"
+    labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    replicas: 3
+    selector_match_labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    spec_template_metadata_labels:
+      app: "{{ service_name }}"
+      name: "{{ service_name }}"
+    containers:
+      - env:
+          - name: MONGODB_ADMIN_PASSWORD
+            value: "{{ MONGODB_ADMIN_PASSWORD }}"
+          - name: MONGODB_PASSWORD
+            value: "{{ MONGODB_PASSWORD }}"
+          - name: MONGODB_USER
+            value: "{{ MONGODB_USER }}"
+          - name: MONGODB_DATABASE
+            value: "{{ MONGODB_DATABASE }}"
+          - name: MONGODB_REPLICA_NAME
+            value: "{{ MONGODB_REPLICA_NAME }}"
+          - name: MONGODB_KEYFILE_VALUE
+            value: "{{ MONGODB_KEYFILE_VALUE }}"
+          - name: MONGODB_SERVICE_NAME
+            value: "{{ MONGODB_SERVICE_NAME }}-internal"
+        name: "{{ service_name }}"
+        image: "{{ mongodb_image }}"
+        command: ["run-mongod-replication"]
+        resources:
+          limits:
+            memory: "{{ MONGODB_MEMORY_LIMIT }}"
+        liveness_probe:
+          initial_delay_seconds: 30
+          tcp_socket:
+            port: 27017
+          timeout_seconds: 1
+        readiness_probe:
+          exec:
+            command:
+              - "stat"
+              - "/tmp/initialized"
+          initial_delay_seconds: 3
+          timeout_seconds: 1
+        ports:
+          - container_port: 27017
+            protocol: TCP
+        volume_mounts:
+          - name: "{{ mongodb_data_volume_name }}"
+            mount_path: "{{ mongodb_data_path }}"
+    spec_volume_claim_templates:
+      - metadata:
+          name: "{{ mongodb_data_volume_name }}"
+        spec:
+          access_modes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: "{{ MONGODB_DATA_STORAGE_SIZE }}Gi"
+    termination_grace_period_seconds: 600
+  register: mongod_set
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Wait for MongoDB to be ready"
+  wait_for:
+    port: 27017
+    host: "{{ mongodb_svc.service.spec.cluster_ip }}"
+    timeout: 300
+  when: state == "present"
+
+

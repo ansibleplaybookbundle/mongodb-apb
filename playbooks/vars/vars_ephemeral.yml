@@ -1,0 +1,13 @@
+---
+# Execution mode
+namespace: 'test_ephemeral_mongodb'
+_apb_plan_id: 'ephemeral'
+deployment_type: 'standalone'
+
+# MongoDB Stuff
+MONGODB_VERSION: '3.2'
+MONGODB_USER: 'ephemeral_user'
+MONGODB_PASSWORD: 'ephemeral'
+MONGODB_DATABASE: 'ephemeral_db'
+MONGODB_ADMIN_PASSWORD: 'ephemeral'
+MONGODB_MEMORY_LIMIT: '512Mi'

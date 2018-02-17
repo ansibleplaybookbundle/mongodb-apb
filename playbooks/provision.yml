@@ -1,0 +1,13 @@
+- name: "[MONGODB-APB][PROVISION] APB to deploy a MongoDB application on Openshift"
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    mode: 'provision'
+    state: 'present'
+  roles:
+  - role: ansible.kubernetes-modules
+    install_python_requirements: no
+  - role: ansibleplaybookbundle.asb-modules
+  - role: mongodb-apb
+    playbook_debug: false

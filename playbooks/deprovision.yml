@@ -1,0 +1,13 @@
+- name: "[MONGODB-APB][DEPROVISION] Deprovision a MongoDB APB from Openshift"
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    mode: 'deprovision'
+    state: 'absent'
+  roles:
+  - role: ansible.kubernetes-modules
+    install_python_requirements: no
+  - role: ansibleplaybookbundle.asb-modules
+  - role: mongodb-apb
+    playbook_debug: false

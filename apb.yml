@@ -1,0 +1,203 @@
+---
+version: 1.0
+name: mongodb-apb
+description: Deploy MongoDB app on your Openshift Project
+bindable: True
+async: optional
+metadata:
+  documentationUrl: https://access.redhat.com
+  imageUrl: http://nightdeveloper.net/wp-content/uploads/2014/12/mongo_db.png
+  displayName: MongoDB (APB)
+  providerDisplayName: "Red Hat, Inc."
+  longDescription: MongoDB is a document database with the scalability and flexibility that you want with the querying and indexing that you need. This APB will cover an standalone and HA deployment.
+  serviceName: mongodb
+plans:
+  - name: ephemeral
+    description: This default plan deploys mongodb-apb
+    free: True
+    metadata:
+      displayName: Ephemeral
+      longDescription: This plan will deploy a MongoDB standalone or HA instance/s using ephemeral storage
+      cost: €0.00
+    parameters:
+        # Container Specs 
+      - name: MONGODB_VERSION
+        default: 3.4
+        title: Version of MongoDB image to be used (2.6, 3.2 or 3.4).
+        type: enum
+        enum: ['2.6', '3.2', '3.4']
+        display_type: select
+      - name: MONGODB_IMAGE_TAG
+        default: 'latest'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+
+        # MongoDB Conf
+      - name: MONGODB_USER
+        default: 'username'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+        title: Username for MongoDB user that will be used for accessing the database.
+      - name: MONGODB_PASSWORD
+        required: True
+        default: 'password'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        display_type: password
+        title: Password for the MongoDB connection user.
+      - name: MONGODB_DATABASE
+        default: 'sampledb'
+        pattern: "^[a-zA-Z0-9_-]*$"
+        type: string
+        title: Name of the MongoDB database accessed.
+      - name: MONGODB_ADMIN_PASSWORD
+        required: True
+        default: 'admin'
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        type: string
+        display_type: password
+        title: Password for the database admin user.
+
+        ## Environment sizing
+      - name: MONGODB_MEMORY_LIMIT
+        default: 512Mi
+        type: string
+        title: Maximum amount of memory the container can use. e.g 512Mi 1Gi
+
+  - name: persistent
+    description: Persistent storage plan to deploy mongodb-apb
+    free: True
+    metadata:
+      displayName: Persistent
+      longDescription: This plan will deploy a MongoDB standalone or HA instance/s using persistent storage
+      cost: €0.00
+    parameters:
+        # Container Specs 
+      - name: MONGODB_VERSION
+        default: 3.4
+        title: Version of MongoDB image to be used (2.6, 3.2 or 3.4).
+        type: enum
+        enum: ['2.6', '3.2', '3.4']
+        display_type: select
+      - name: MONGODB_IMAGE_TAG
+        default: 'latest'
+        title: Tag of container image to be used.
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+
+        # MongoDB Conf
+      - name: MONGODB_USER
+        default: 'username'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+        title: Username for MongoDB user that will be used for accessing the database.
+      - name: MONGODB_PASSWORD
+        required: True
+        default: 'password'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        display_type: password
+        title: Password for the MongoDB connection user.
+      - name: MONGODB_DATABASE
+        default: 'sampledb'
+        pattern: "^[a-zA-Z0-9_-]*$"
+        type: string
+        title: Name of the MongoDB database accessed.
+      - name: MONGODB_ADMIN_PASSWORD
+        required: True
+        default: 'admin'
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        type: string
+        display_type: password
+        title: Password for the database admin user.
+
+        ## Environment sizing
+      - name: MONGODB_DATA_STORAGE_SIZE
+        default: 1
+        type: number
+        title: Volume space available for data inGi.
+      - name: MONGODB_MEMORY_LIMIT
+        default: 512Mi
+        type: string
+        title: Maximum amount of memory the container can use. e.g 512Mi 1Gi
+
+  - name: HA
+    description: HA MongoDB deployment with Persistent storage
+    free: True
+    metadata:
+      displayName: MongoDB HA
+      longDescription: This plan will deploy a MongoDB HA instance using persistent storage
+      cost: €0.00
+    parameters:
+        # Container Specs 
+      - name: MONGODB_VERSION
+        default: 3.4
+        title: Version of MongoDB image to be used (2.6, 3.2 or 3.4).
+        type: enum
+        enum: ['2.6', '3.2', '3.4']
+        display_type: select
+      - name: MONGODB_IMAGE_TAG
+        default: 'latest'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+
+        # MongoDB Conf
+      - name: MONGODB_USER
+        default: 'username'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+        title: Username for MongoDB user that will be used for accessing the database.
+      - name: MONGODB_PASSWORD
+        required: True
+        default: 'password'
+        type: string
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        display_type: password
+        title: Password for the MongoDB connection user.
+      - name: MONGODB_DATABASE
+        default: 'sampledb'
+        pattern: "^[a-zA-Z0-9_-]*$"
+        type: string
+        title: Name of the MongoDB database accessed.
+      - name: MONGODB_ADMIN_PASSWORD
+        required: True
+        default: 'admin'
+        pattern: "^[a-zA-Z0-9_.-]*$"
+        type: string
+        display_type: password
+        title: Password for the database admin user.
+
+        ## Environment sizing
+      - name: MONGODB_DATA_STORAGE_SIZE
+        default: 1
+        type: number
+        title: Volume space available for data in Gi.
+      - name: MONGODB_MEMORY_LIMIT
+        default: 512Mi
+        type: string
+        title: Maximum amount of memory the container can use. e.g 512Mi 1Gi
+
+        ## HA Deployment
+      - name: MONGODB_KEYFILE_VALUE
+        required: True
+        default: 'xxxxxxxxxxxxxxxxx'
+        type: string
+        display_type: textarea
+        title: Keyfile to encode the communication between Replica set members.
+      - name: MONGODB_REPLICA_NAME
+        required: False
+        default: 'rs0'
+        type: string
+        title: Replica Set name for MongoDB Cluster.
+      - name: MONGODB_SERVICE_NAME
+        required: False
+        default: 'mongodb'
+        type: string
+        title: Service name for MongoDB's Replica Set.
+
