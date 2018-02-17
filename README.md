@@ -36,7 +36,8 @@ apb run --project mongo-apb-test-01
 
 ## Elements already done
 
-- MongoDB standalone
+- MongoDB standalone deployment
+- MongoDB HA deployment
 - DB Enconde Binding
 - Authentication
 - Deprovision
@@ -44,14 +45,15 @@ apb run --project mongo-apb-test-01
 - Plans
   - Ephemeral
   - Persistent
+  - HA
 
 ## Working on
 
-- MongoDB HA deployment
+- RPM package with [tito](https://github.com/dgoodwin/tito)
 
 ## To Do
 
-- RPM package with [tito](https://github.com/dgoodwin/tito)
+- Code improvements for kind of deployment DC vs STS on Standalone deployment
 
 # References
 
