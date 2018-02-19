@@ -1,0 +1,16 @@
+---
+# Execution mode
+namespace: 'test_persistent_mongodb'
+_apb_plan_id: 'persistent'
+deployment_type: 'standalone'
+
+# MongoDB Stuff
+MONGODB_VERSION: '3.2'
+MONGODB_USER: 'persistent_user'
+MONGODB_PASSWORD: 'persistent'
+MONGODB_DATABASE: 'persistent_db'
+MONGODB_ADMIN_PASSWORD: 'persistent'
+
+# Environment sizing
+MONGODB_MEMORY_LIMIT: '512Mi'
+MONGODB_DATA_STORAGE_SIZE: '3'

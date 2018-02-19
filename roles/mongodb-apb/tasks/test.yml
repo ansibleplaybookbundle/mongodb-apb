@@ -1,0 +1,48 @@
+---
+- name: "[MONGODB-APB][{{ mode | upper }}] Testing MongoDB Deployment"
+  debug:
+    msg:
+      - "Test Execution:"
+      - "  Mode: {{ mode }}"
+      - "  State: {{ state }}"
+      - "  Deployment Type: {{ deployment_type }}" 
+      - "  Plan: {{ _apb_plan_id }}" 
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Sleeping"
+  pause:
+    seconds: 10
+
+# Check that MongoDB don't fall down after some seconds
+- name: "[MONGODB-APB][{{ mode | upper }}] Ensure that MongoDB is still ready"
+  wait_for:
+    port: 27017
+    host: "{{ mongodb_svc.service.spec.cluster_ip }}"
+    timeout: 600
+  register: mongodb_conn
+  when: state == "present"
+
+# Test insertions
+## Not Working 
+#- name: "[MONGODB-APB][{{ mode | upper }}] Check MongoDB Master Node"
+#  shell: "oc rsh {{ service_name }}-0 {{ bin_path }}/mongo 127.0.0.1:27017 --eval={{ is_master }} --quiet"
+#  register: mongodb_cluster_status
+#
+#- name: "[MONGODB-APB][{{ mode | upper }}] Check MongoDB Master Node"
+#  shell: "oc rsh {{ service_name }}-0 {{ bin_path }}/mongo {{ mongodb_cluster_status.primary | from_json }}/{{ MONGODB_DATABASE }} -u {{ MONGODB_USER }} -p {{ MONGODB_PASSWORD }} --eval='{{ item }}'"
+#  with_items:
+#    - "db.products.insert( { item: 'test_01', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_02', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_03', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_04', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_05', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_06', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_07', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_08', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_09', qty: {{ 100 | random() }} } )"
+#    - "db.products.insert( { item: 'test_10', qty: {{ 100 | random() }} } )"
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Saving Tests results on error"
+  asb_save_test_result:
+    fail: True
+    msg: "Test Failed. Error connecting with MongoDB. Data - {{ mongodb_conn }}"
+  when: mongodb_conn.failed | bool

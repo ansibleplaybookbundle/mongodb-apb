@@ -1,0 +1,18 @@
+---
+# MongoDB APB
+service_name: 'mongodb'
+app_name: "{{ service_name }}-apb"
+#mongodb_image: "centos/mongodb-{{ MONGODB_VERSION | replace('.', '') }}-centos7" 
+mongodb_image_tag: "{{ MONGODB_IMAGE_TAG | default('latest') }}"
+mongodb_image: "registry.access.redhat.com/rhscl/mongodb-{{ MONGODB_VERSION | replace('.', '') }}-rhel7"
+mongodb_data_volume_name: "{{ service_name }}-data"
+mongodb_data_pvc_name: "{{ service_name }}-data-pvc"
+
+# MongoDB Config
+mongodb_data_path: '/var/lib/mongodb/data'
+
+# Other
+bin_path: "/opt/rh/rh-mongodb{{ MONGODB_VERSION | replace('.', '') }}/root/bin"
+
+# MongoDB tests commands
+is_master: '\"db.isMaster()\"'

@@ -1,0 +1,77 @@
+---
+- name: "[MONGODB-APB][MAIN] MongoDB"
+  debug:
+    msg:
+      - "Entering on Main:"
+      - "  Mode: {{ mode }}"
+      - "  State: {{ state | default('undefined') }}"
+      - "  Plan: {{ _apb_plan_id }}" 
+
+# Provision
+- block:
+  - name: "[MONGODB-APB][MAIN] Deploying MongoDB"
+    include_tasks: mongodb.yml
+
+  - name: "[MONGODB-APB][MAIN] Binding Credentials MongoDB"
+    include_tasks: bind_credentials.yml
+  when: 
+    - mode == 'provision'
+    - _apb_plan_id != 'cluster'
+
+# Provision cluster
+- block:
+  - name: "[MONGODB-APB][MAIN] Deploying MongoDB cluster"
+    include_tasks: mongodb_ha.yml
+
+  - name: "[MONGODB-APB][MAIN] Binding Credentials MongoDB"
+    include_tasks: bind_credentials.yml
+  when:
+    - mode == 'provision'
+    - _apb_plan_id == 'cluster'
+
+# Deprovision
+- block:
+  # Check what resource I have provision, if is a DC, just deprovision the standalone one
+  - name: "[MONGODB-APB][MAIN] Check deployment type for MongoDB"
+    command: "oc get dc/{{ service_name }} -n {{ namespace }} -o yaml"
+    register: provisioned_resource
+    ignore_errors: True
+
+  - name: "[MONGODB-APB][MAIN] Set Deployment type for cluster"
+    set_fact:
+      deployment_type: 'cluster'
+    when: provisioned_resource.rc == 1
+
+  - name: "[MONGODB-APB][MAIN] Set Deployment type Standalone"
+    set_fact:
+      deployment_type: 'standalone'
+    when: provisioned_resource.rc == 0
+
+  - name: "[MONGODB-APB][MAIN] Deprovision MongoDB Standalone"
+    include_tasks: mongodb.yml
+    when: deployment_type == 'standalone'
+
+  - name: "[MONGODB-APB][MAIN] Deprovision MongoDB cluster"
+    include_tasks: mongodb_ha.yml
+    when: deployment_type == 'cluster'
+  when: mode == 'deprovision'
+
+# Tests
+- block:
+  - name: "[MONGODB-APB][MAIN] Testing Deploy MongoDB"
+    include_tasks: mongodb.yml
+    when: _apb_plan_id != 'cluster'
+
+  - name: "[MONGODB-APB][MAIN] Testing Deploy MongoDB cluster"
+    include_tasks: mongodb_ha.yml
+    when: _apb_plan_id == 'cluster'
+
+  - name: "[MONGODB-APB][MAIN] Execute tests over MongoDB deployment"
+    include_tasks: test.yml
+  when: mode == 'test'
+
+# Recover Tests Results
+- block:
+  - name: "[MONGODB-APB][FINISH] Recover Tests Results"
+    include_tasks: recover_tests.yml
+  when: mode == 'finish_tests'

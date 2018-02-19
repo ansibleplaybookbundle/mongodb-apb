@@ -1,0 +1,35 @@
+- name: "[MONGODB-APB][TEST] Test MongoDB APB"
+  hosts: localhost
+  gather_facts: False
+  connection: local
+  vars:
+    finish_tests: False
+  roles:
+  - role: ansible.kubernetes-modules
+    install_python_requirements: no
+    playbook_debug: True
+  - role: ansibleplaybookbundle.asb-modules
+
+  post_tasks:
+  - name: "[TEST][EPHEMERAL] Pre-load variables for testing"
+    include_vars: vars/vars_ephemeral.yml
+ 
+  - name: "[TEST][{{ _apb_plan_id | upper }}] Load testing tasks"
+    import_tasks: test_tasks.yml
+ 
+  - name: "[TEST][PERSISTENT] Pre-load variables for testing"
+    include_vars: vars/vars_persistent.yml
+ 
+  - name: "[TEST][{{ _apb_plan_id | upper }}] Load testing tasks"
+    import_tasks: test_tasks.yml
+
+  - name: "[TEST][HA] Pre-load variables for testing"
+    include_vars: vars/vars_ha.yml
+
+  - name: "[TEST][{{ _apb_plan_id | upper }}] Load testing tasks"
+    import_tasks: test_tasks.yml
+
+  - name: "[TEST][{{ _apb_plan_id | upper }}] Recover tests results"
+    include_tasks: test_tasks.yml
+    vars:
+      finish_tests: True

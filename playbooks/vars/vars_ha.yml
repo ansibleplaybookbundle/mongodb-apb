@@ -1,0 +1,21 @@
+---
+# Execution mode
+namespace: 'test_persistent_ha_mongodb'
+_apb_plan_id: 'cluster'
+deployment_type: 'cluster'
+
+# MongoDB Stuff
+MONGODB_VERSION: '3.2'
+MONGODB_USER: 'persistent_ha_user'
+MONGODB_PASSWORD: 'persistent_ha_password'
+MONGODB_DATABASE: 'persistent_ha_db'
+MONGODB_ADMIN_PASSWORD: 'persistent_ha'
+
+# Environment sizing
+MONGODB_MEMORY_LIMIT: '512Mi'
+MONGODB_DATA_STORAGE_SIZE: '3'
+
+# Replica Set
+MONGODB_KEYFILE_VALUE: 'xxxxxxxxxxxxxxxxx'
+MONGODB_REPLICA_NAME: 'rs0'
+MONGODB_SERVICE_NAME: 'mongodb'
