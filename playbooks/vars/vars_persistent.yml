@@ -10,6 +10,7 @@ MONGODB_USER: 'persistent_user'
 MONGODB_PASSWORD: 'persistent'
 MONGODB_DATABASE: 'persistent_db'
 MONGODB_ADMIN_PASSWORD: 'persistent'
+USE_UPSTREAM_IMAGES: False
 
 # Environment sizing
 MONGODB_MEMORY_LIMIT: '512Mi'

@@ -10,6 +10,7 @@ MONGODB_USER: 'persistent_ha_user'
 MONGODB_PASSWORD: 'persistent_ha_password'
 MONGODB_DATABASE: 'persistent_ha_db'
 MONGODB_ADMIN_PASSWORD: 'persistent_ha'
+USE_UPSTREAM_IMAGES: False
 
 # Environment sizing
 MONGODB_MEMORY_LIMIT: '512Mi'

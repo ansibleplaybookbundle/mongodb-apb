@@ -120,7 +120,7 @@
           resources:
             requests:
               storage: "{{ MONGODB_DATA_STORAGE_SIZE }}Gi"
-    termination_grace_period_seconds: 600
+    termination_grace_period_seconds: 300
   register: mongod_set
 
 - name: "[MONGODB-APB][{{ mode | upper }}] Wait for MongoDB to be ready"

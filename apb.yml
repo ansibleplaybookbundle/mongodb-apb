@@ -32,6 +32,11 @@ plans:
         type: string
         pattern: "^[a-zA-Z0-9_.-]*$"
         required: False
+      - name: USE_UPSTREAM_IMAGES
+        default: False
+        title: Use MongoDB images from Upstream registry
+        type: bool
+        required: False
 
         # MongoDB Conf
       - name: MONGODB_USER
@@ -86,6 +91,11 @@ plans:
         title: Tag of container image to be used.
         type: string
         pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+      - name: USE_UPSTREAM_IMAGES
+        default: False
+        title: Use MongoDB images from Upstream registry
+        type: bool
         required: False
 
         # MongoDB Conf
@@ -144,6 +154,11 @@ plans:
         default: 'latest'
         type: string
         pattern: "^[a-zA-Z0-9_.-]*$"
+        required: False
+      - name: USE_UPSTREAM_IMAGES
+        default: False
+        title: Use MongoDB images from Upstream registry
+        type: bool
         required: False
 
         # MongoDB Conf
