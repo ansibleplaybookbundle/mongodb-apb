@@ -13,11 +13,11 @@ metadata:
   serviceName: mongodb
 plans:
   - name: ephemeral
-    description: This default plan deploys mongodb-apb
+    description: This default plan deploys mongodb-apb without persistent storage
     free: True
     metadata:
       displayName: Ephemeral
-      longDescription: This plan will deploy a MongoDB standalone or HA instance/s using ephemeral storage
+      longDescription: This plan will deploy a MongoDB standalone instance/s using ephemeral storage
       cost: €0.00
     parameters:
         # Container Specs 
@@ -71,7 +71,7 @@ plans:
     free: True
     metadata:
       displayName: Persistent
-      longDescription: This plan will deploy a MongoDB standalone or HA instance/s using persistent storage
+      longDescription: This plan will deploy a MongoDB standalone using persistent storage
       cost: €0.00
     parameters:
         # Container Specs 
@@ -125,11 +125,11 @@ plans:
         type: string
         title: Maximum amount of memory the container can use. e.g 512Mi 1Gi
 
-  - name: HA
+  - name: cluster
     description: HA MongoDB deployment with Persistent storage
     free: True
     metadata:
-      displayName: MongoDB HA
+      displayName: Replica Set Deployment
       longDescription: This plan will deploy a MongoDB HA instance using persistent storage
       cost: €0.00
     parameters:

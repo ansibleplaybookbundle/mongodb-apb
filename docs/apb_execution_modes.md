@@ -14,7 +14,7 @@ This plan will create a pod with an instance of MongoDB running on standalone mo
 - **persistent**
 This plan will create a pod with an instance of MongoDB running on standalone mode and a persistent storage, take care with a non-provided PVs whe you execute this mode, as a requirement will need at least a PV with 1 Gi (default) to work fine
 
-- **HA**
+- **cluster**
 This plan will create a StatefullSet of X pods with some instances of MongoDB running on Replica Set mode and also Persistent storage. You need at least 3 PVs ready to be used with 1 Gi (default) of storage.
 
 This is the graph of a Provision execution:
@@ -47,8 +47,8 @@ This execution mode will perform this actions on your Openshift installation:
 
 - Load variables for HA scenario 
 - Create a project with a specific name
-- Provision mongodb-apb role with **HA Plan**
-- Deprovision mongodb-apb role with **HA Plan**
+- Provision mongodb-apb role with **Cluster Plan**
+- Deprovision mongodb-apb role with **Cluster Plan**
 - Delete the project with a specific name
 
 This mode only could be executed from command line and are oriented to APB Development and Support

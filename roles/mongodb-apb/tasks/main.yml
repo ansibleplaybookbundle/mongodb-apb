@@ -16,18 +16,18 @@
     include_tasks: bind_credentials.yml
   when: 
     - mode == 'provision'
-    - _apb_plan_id != 'HA'
+    - _apb_plan_id != 'cluster'
 
-# Provision HA
+# Provision cluster
 - block:
-  - name: "[MONGODB-APB][MAIN] Deploying MongoDB HA"
+  - name: "[MONGODB-APB][MAIN] Deploying MongoDB cluster"
     include_tasks: mongodb_ha.yml
 
   - name: "[MONGODB-APB][MAIN] Binding Credentials MongoDB"
     include_tasks: bind_credentials.yml
   when:
     - mode == 'provision'
-    - _apb_plan_id == 'HA'
+    - _apb_plan_id == 'cluster'
 
 # Deprovision
 - block:
@@ -37,7 +37,7 @@
     register: provisioned_resource
     ignore_errors: True
 
-  - name: "[MONGODB-APB][MAIN] Set Deployment type for HA"
+  - name: "[MONGODB-APB][MAIN] Set Deployment type for cluster"
     set_fact:
       deployment_type: 'cluster'
     when: provisioned_resource.rc == 1
@@ -51,7 +51,7 @@
     include_tasks: mongodb.yml
     when: deployment_type == 'standalone'
 
-  - name: "[MONGODB-APB][MAIN] Deprovision MongoDB HA"
+  - name: "[MONGODB-APB][MAIN] Deprovision MongoDB cluster"
     include_tasks: mongodb_ha.yml
     when: deployment_type == 'cluster'
   when: mode == 'deprovision'
@@ -60,11 +60,11 @@
 - block:
   - name: "[MONGODB-APB][MAIN] Testing Deploy MongoDB"
     include_tasks: mongodb.yml
-    when: _apb_plan_id != 'HA'
+    when: _apb_plan_id != 'cluster'
 
-  - name: "[MONGODB-APB][MAIN] Testing Deploy MongoDB HA"
+  - name: "[MONGODB-APB][MAIN] Testing Deploy MongoDB cluster"
     include_tasks: mongodb_ha.yml
-    when: _apb_plan_id == 'HA'
+    when: _apb_plan_id == 'cluster'
 
   - name: "[MONGODB-APB][MAIN] Execute tests over MongoDB deployment"
     include_tasks: test.yml

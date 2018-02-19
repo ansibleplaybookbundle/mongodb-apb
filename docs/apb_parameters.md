@@ -48,7 +48,7 @@
   - _Type_: Number
   - _Description_: 'PVC size to be claimed, in Gi.'
 
-## HA specific variables
+## Cluster specific variables
 
 - **MONGODB_KEYFILE_VALUE**
   - _Default_: 'xxxxxxxxxxxxxxxxx'

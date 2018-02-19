@@ -1,7 +1,7 @@
 ---
 # Execution mode
 namespace: 'test_persistent_ha_mongodb'
-_apb_plan_id: 'HA'
+_apb_plan_id: 'cluster'
 deployment_type: 'cluster'
 
 # MongoDB Stuff
