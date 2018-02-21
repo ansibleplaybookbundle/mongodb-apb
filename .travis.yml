@@ -9,8 +9,6 @@ python:
 
 stages:
   - lint
-    #  - build
-    #  - test
 
 env:
   - ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:$PWD/roles OPENSHIFT_VERSION=latest
