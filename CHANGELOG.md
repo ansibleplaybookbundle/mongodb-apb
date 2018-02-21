@@ -7,6 +7,7 @@ MongoDB APB Changelog
 - Tests covering Standalone Epehemeral and Persistent plan
 - Tests covering HA Plan
 - Added Flows svg for every plan on docs
+- Added Callback compatibility
 
 ### Changed
 
