@@ -24,7 +24,7 @@ install:
   - sudo apt-get install git
   - pip install --pre ansible apb yamllint
   - ansible-galaxy install ansible.kubernetes-modules
-  - git clone https://github.com/ansibleplaybookbundle/ansible-asb-modules.git $PWD/roles
+  - git clone https://github.com/ansibleplaybookbundle/ansible-asb-modules.git $PWD/roles/ansibleplaybookbundle.asb-modules
 
 jobs:
   include:
