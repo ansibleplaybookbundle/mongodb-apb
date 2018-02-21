@@ -33,7 +33,7 @@ jobs:
     script:
       # Verify all playbooks have valid syntax
       - |
-        for PLAYBOOK in playbooks/*.yml
+        for PLAYBOOK in playbooks/{provision,deprovision,test}.yml
         do ansible-playbook $PLAYBOOK --syntax-check
         done
   - stage: lint
