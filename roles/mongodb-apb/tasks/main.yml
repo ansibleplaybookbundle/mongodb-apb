@@ -7,6 +7,16 @@
       - "  State: {{ state | default('undefined') }}"
       - "  Plan: {{ _apb_plan_id }}" 
 
+- name: "[MONGODB-APB][{{ mode | upper }}] Select Upstream image"
+  set_fact:
+    mongodb_image: "{{ mongodb_upstream_image }}"
+  when: USE_UPSTREAM_IMAGES | bool
+
+- name: "[MONGODB-APB][{{ mode | upper }}] Select Downstream image"
+  set_fact:
+    mongodb_image: "{{ mongodb_downstream_image }}"
+  when: not USE_UPSTREAM_IMAGES | bool
+
 # Provision
 - block:
   - name: "[MONGODB-APB][MAIN] Deploying MongoDB"

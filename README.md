@@ -54,7 +54,6 @@ apb run --project mongo-apb-test-01
 ## To Do
 
 - Code improvements for kind of deployment DC vs STS on Standalone deployment
-- Configurable number of replicas of the Replica Set cluster
 
 # References
 
