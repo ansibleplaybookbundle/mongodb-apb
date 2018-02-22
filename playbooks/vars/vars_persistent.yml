@@ -1,6 +1,6 @@
 ---
 # Execution mode
-namespace: 'test_persistent_mongodb'
+namespace: 'mongodb-apb'
 _apb_plan_id: 'persistent'
 deployment_type: 'standalone'
 
