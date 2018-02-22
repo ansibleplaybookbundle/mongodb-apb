@@ -13,8 +13,8 @@ stages:
   - test
 
 env:
-  - ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:$PWD/roles OPENSHIFT_VERSION=v3.7.1
   - ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:$PWD/roles OPENSHIFT_VERSION=latest
+  - ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:$PWD/roles OPENSHIFT_VERSION=v3.7.1
 
 before_install:
   - sudo apt-get update -qq
@@ -27,9 +27,6 @@ install:
   - pip install --pre ansible apb yamllint
   - ansible-galaxy install ansible.kubernetes-modules
   - git clone https://github.com/ansibleplaybookbundle/ansible-asb-modules.git $PWD/roles/ansibleplaybookbundle.asb-modules
-  - mkdir ~/apb
-  - wget https://raw.githubusercontent.com/openshift/ansible-service-broker/master/scripts/run_latest_build.sh -P ~/apb
-  - chmod 755 ~/apb/run_latest_build.sh
 
 jobs:
   include:
