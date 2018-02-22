@@ -58,9 +58,10 @@ script:
   - export APB_NAME=mongodb-apb
   - apb build
   - sudo docker cp $(docker create docker.io/openshift/origin:$OPENSHIFT_VERSION):/bin/oc /usr/local/bin/oc
-  - ORIGIN_VERSION=$OPENSHIFT_VERSION ~/apb/run_latest_build.sh
-  - oc adm policy add-cluster-role-to-user cluster-admin developer
-  - oc login -u developer
+  - oc cluster up --version=$OPENSHIFT_VERSION
+  - oc login -u system:admin
   - oc new-project $APB_NAME
-  - docker run --rm --net=host -v $HOME/.kube:/opt/apb/.kube:z -u $UID $APB_NAME test
+  - docker run --rm --net=host -v $HOME/.kube:/opt/apb/.kube:z -u $UID $APB_NAME provision --extra-vars "namespace=$APB_NAME"
+  - oc get all -n $APB_NAME
+  - docker run --rm --net=host -v $HOME/.kube:/opt/apb/.kube:z -u $UID $APB_NAME deprovision --extra-vars "namespace=$APB_NAME"
   - oc get all -n $APB_NAME
