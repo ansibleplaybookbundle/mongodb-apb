@@ -53,4 +53,10 @@ jobs:
 # Test Stage
 script:
   - export APB_NAME=mongodb-apb
-  - echo $APB_NAME
+  - apb build
+  - sudo docker cp $(docker create docker.io/openshift/origin:$OPENSHIFT_VERSION):/bin/oc /usr/local/bin/oc
+  - oc cluster up --version=$OPENSHIFT_VERSION
+  - oc login -u system:admin
+  - oc new-project $APB_NAME
+  - docker run --rm --net=host -v $HOME/.kube:/opt/apb/.kube:z -u $UID $APB_NAME test
+  - oc get all -n $APB_NAME
