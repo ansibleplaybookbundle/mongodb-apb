@@ -57,6 +57,8 @@ script:
   - sudo docker cp $(docker create docker.io/openshift/origin:$OPENSHIFT_VERSION):/bin/oc /usr/local/bin/oc
   - oc cluster up --version=$OPENSHIFT_VERSION
   - oc login -u system:admin
+  - oc adm policy add-cluster-role-to-user cluster-admin developer
+  - oc login -u developer
   - oc new-project $APB_NAME
   - docker run --rm --net=host -v $HOME/.kube:/opt/apb/.kube:z -u $UID $APB_NAME test
   - oc get all -n $APB_NAME
