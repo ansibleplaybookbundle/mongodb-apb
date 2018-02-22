@@ -9,6 +9,8 @@ python:
 
 stages:
   - lint
+  - build
+  - test
 
 env:
   - ANSIBLE_ROLES_PATH=$ANSIBLE_ROLES_PATH:$PWD/roles OPENSHIFT_VERSION=latest
@@ -48,3 +50,7 @@ jobs:
       - apb build
       - if ! git diff --exit-code; then echo "Committed APB spec differs from built apb.yml spec"; exit 1; fi
 
+# Test Stage
+script:
+  - export APB_NAME=mongodb-apb
+  - echo $APB_NAME
