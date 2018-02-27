@@ -1,5 +1,5 @@
 ---
-version: 1.2
+version: 1.0
 name: mongodb-apb
 description: Deploy MongoDB app on your Openshift Project
 bindable: True
