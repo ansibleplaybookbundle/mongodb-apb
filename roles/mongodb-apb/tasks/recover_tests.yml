@@ -2,3 +2,5 @@
 - name: "[MONGODB-APB][{{ mode | upper }}] Saving Tests results on success"
   asb_save_test_result:
     msg: 'Test Passed! \o/'
+  ignore_errors: true
+  when: travis is undefined

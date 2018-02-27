@@ -1,8 +1,10 @@
 # MongoDB APB
 
-![img](docs/img/mongodb-logo.png)
+[![Build Status](https://travis-ci.org/RHsyseng/mongodb-apb.svg?branch=master)](https://travis-ci.org/RHsyseng/mongodb-apb)
 
 ## Description
+
+![img](docs/img/mongodb-logo.png)
 
 Deploy MongoDB into your project of Openshift using APB
 
