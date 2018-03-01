@@ -43,12 +43,12 @@ jobs:
     script:
       # Verify apb.yml file is valid YAML
       - yamllint apb.yml
-  - stage: lint
-    python: '2.7'
-    script:
-      # Check if committed APB spec matches Dockerfile
-      - apb build
-      - if ! git diff --exit-code; then echo "Committed APB spec differs from built apb.yml spec"; exit 1; fi
+        #  - stage: lint
+        #    python: '2.7'
+        #    script:
+        #      # Check if committed APB spec matches Dockerfile
+        #      - apb build
+        #      - if ! git diff --exit-code; then echo "Committed APB spec differs from built apb.yml spec"; exit 1; fi
 
 # Test Stage
 script:
