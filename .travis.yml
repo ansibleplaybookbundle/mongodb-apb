@@ -43,19 +43,14 @@ jobs:
     script:
       # Verify apb.yml file is valid YAML
       - yamllint apb.yml
-  - stage: lint
-    python: '2.7'
-    script:
-      # Check if committed APB spec matches Dockerfile
-      - apb build
-      - export B64_SPEC=`base64 apb.yml | tr -d '\n'`
-      - export APB_LABEL=`docker inspect --format='{{json .Config.Labels}}' $(docker images -q | head -n 1) | jq '."com.redhat.apb.spec"' | cut -d'"' -f2 | tr -d '\n'`
-      - [[ "$B64_SPEC" = "$APB_LABEL" ]] || { echo "APB Spec Label doesn't match"; exit -1; }
 
 # Test Stage
 script:
   - export APB_NAME=mongodb-apb
   - apb build
+  - export B64_SPEC=`base64 apb.yml | tr -d '\n'`
+  - export APB_LABEL=`docker inspect --format='{{json .Config.Labels}}' $(docker images -q | head -n 1) | jq '."com.redhat.apb.spec"' | cut -d'"' -f2 | tr -d '\n'`
+  - [[ "$B64_SPEC" = "$APB_LABEL" ]] || { echo "APB Spec Label doesn't match"; exit -1; }
   - sudo docker cp $(docker create docker.io/openshift/origin:$OPENSHIFT_VERSION):/bin/oc /usr/local/bin/oc
   - oc cluster up --version=$OPENSHIFT_VERSION
   - oc login -u system:admin
