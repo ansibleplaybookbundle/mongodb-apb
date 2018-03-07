@@ -2,7 +2,7 @@ FROM ansibleplaybookbundle/apb-base
 
 LABEL "com.redhat.apb.version"="1.2.0"
 LABEL "com.redhat.apb.spec"=\
-"LS0tCnZlcnNpb246IDEuMgpuYW1lOiBtb25nb2RiLWFwYgpkZXNjcmlwdGlvbjogRGVwbG95IE1v\
+"LS0tCnZlcnNpb246IDEuMApuYW1lOiBtb25nb2RiLWFwYgpkZXNjcmlwdGlvbjogRGVwbG95IE1v\
 bmdvREIgYXBwIG9uIHlvdXIgT3BlbnNoaWZ0IFByb2plY3QKYmluZGFibGU6IFRydWUKYXN5bmM6\
 IG9wdGlvbmFsCm1ldGFkYXRhOgogIGRvY3VtZW50YXRpb25Vcmw6IGh0dHBzOi8vYWNjZXNzLnJl\
 ZGhhdC5jb20KICBpbWFnZVVybDogaHR0cDovL25pZ2h0ZGV2ZWxvcGVyLm5ldC93cC1jb250ZW50\
@@ -144,8 +144,6 @@ bnZpcm9ubWVudCBTaXppbmcKICAgICAgLSBuYW1lOiBNT05HT0RCX01FTU9SWV9MSU1JVAogICAg\
 ICAgIGRlZmF1bHQ6IDUxMk1pCiAgICAgICAgdHlwZTogc3RyaW5nCiAgICAgICAgdGl0bGU6IE1h\
 eGltdW0gYW1vdW50IG9mIG1lbW9yeSB0aGUgY29udGFpbmVyIGNhbiB1c2UgZWcgNTEyTWkgMUdp\
 CiAgICAgICAgZGlzcGxheV9ncm91cDogRW52aXJvbm1lbnQgU2l6aW5nCg=="
-
-
 
 COPY playbooks /opt/apb/actions
 COPY roles /opt/ansible/roles
