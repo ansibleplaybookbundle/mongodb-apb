@@ -50,7 +50,7 @@ script:
   - apb build
   - export B64_SPEC=`base64 apb.yml | tr -d '\n'`
   - export APB_LABEL=`docker inspect --format='{{json .Config.Labels}}' $(docker images -q | head -n 1) | jq '."com.redhat.apb.spec"' | cut -d'"' -f2 | tr -d '\n'`
-  - [[ "$B64_SPEC" = "$APB_LABEL" ]] || { echo "APB Spec Label doesn't match"; exit -1; }
+  - if [ "$B64_SPEC" != "$APB_LABEL" ]; then { echo "APB Spec Label doesn't match"; exit -1; }; fi;
   - sudo docker cp $(docker create docker.io/openshift/origin:$OPENSHIFT_VERSION):/bin/oc /usr/local/bin/oc
   - oc cluster up --version=$OPENSHIFT_VERSION
   - oc login -u system:admin
