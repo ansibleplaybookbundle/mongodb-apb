@@ -1,6 +1,6 @@
 # MongoDB APB
 
-[![Build Status](https://travis-ci.org/RHsyseng/mongodb-apb.svg?branch=master)](https://travis-ci.org/RHsyseng/mongodb-apb)
+[![Build Status](https://travis-ci.org/ansibleplaybookbundle/mongodb-apb.svg?branch=master)](https://travis-ci.org/ansibleplaybookbundle/mongodb-apb)
 
 ## Description
 
